@@ -27,14 +27,14 @@ chrome.runtime.onInstalled.addListener((details) => {
   });
 
   if (details.reason === 'install') {
-    console.log('[Spotifiee] Extension installed successfully.');
+    console.log('[Spotifiee] Installed successfully.');
   }
 });
 
 // Handle messages from content script & popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'AD_BLOCKED') {
-    const estimatedDuration = message.duration || 30; // default estimated ad duration in seconds
+    const estimatedDuration = message.duration || 30;
     chrome.storage.local.get(['adsBlockedCount', 'timeSavedSeconds'], (data) => {
       const newCount = (data.adsBlockedCount || 0) + 1;
       const newTimeSaved = (data.timeSavedSeconds || 0) + estimatedDuration;
@@ -43,20 +43,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         timeSavedSeconds: newTimeSaved
       });
       sendResponse({ status: 'ok', adsBlockedCount: newCount, timeSavedSeconds: newTimeSaved });
-    });
-    return true; // Keep message channel open for async response
-  }
-
-  if (message.type === 'MUTE_TAB' && sender.tab?.id) {
-    chrome.tabs.update(sender.tab.id, { muted: true }, () => {
-      sendResponse({ status: 'tab_muted' });
-    });
-    return true;
-  }
-
-  if (message.type === 'UNMUTE_TAB' && sender.tab?.id) {
-    chrome.tabs.update(sender.tab.id, { muted: false }, () => {
-      sendResponse({ status: 'tab_unmuted' });
     });
     return true;
   }
