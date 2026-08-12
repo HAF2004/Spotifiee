@@ -1,0 +1,8 @@
+# Chrome extension generated metadata
+_metadata/
+
+# OS / Editor temporary files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
