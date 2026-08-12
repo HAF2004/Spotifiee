@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Spotifiee",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Smart ad blocker, auto-muter, and fast-forward skipper for Spotify Web Player.",
   "author": "Spotifiee Team",
   "icons": {

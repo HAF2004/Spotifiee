@@ -72,7 +72,7 @@
           <span class="spotifiee-icon">⚡</span>
           <div class="spotifiee-text">
             <strong>Spotifiee Active</strong>
-            <span>Ad 16x Skipped & Muted</span>
+            <span>Ad Skipped & Muted</span>
           </div>
           <span class="spotifiee-pulse"></span>
         </div>

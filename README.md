@@ -6,7 +6,7 @@
   <p>Manifest V3 • Dual-World Memory Engine • Zero-Latency Ad Skipping</p>
 
   [![Manifest V3](https://img.shields.io/badge/Manifest-V3-1DB954?style=for-the-badge&logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/intro/)
-  [![Version](https://img.shields.io/badge/Version-1.7.0-1DB954?style=for-the-badge)](https://github.com/HAF2004/Spotifiee)
+  [![Version](https://img.shields.io/badge/Version-1.8.0-1DB954?style=for-the-badge)](https://github.com/HAF2004/Spotifiee)
   [![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Edge%20%7C%20Brave-black?style=for-the-badge&logo=googlechrome)](https://open.spotify.com/)
   [![License](https://img.shields.io/badge/License-MIT-gray?style=for-the-badge)](LICENSE)
 </div>
@@ -45,7 +45,7 @@ Unlike traditional ad blockers that try to block Spotify streams at the DNS leve
  │ • Hooks HTMLMediaElement.prototype.play      │        │ • Blocks doubleclick.net          │
  │ • Captures window.Audio instances in memory  │        │ • Blocks googleads & syndication  │
  │ • Listens to loadedmetadata & play (0ms)     │        │ • Blocks adeventtracker & logs    │
- │ • Sets currentTime = duration & 16x speed    │        └───────────────────────────────────┘
+ │ • Sets currentTime = duration instantly      │        └───────────────────────────────────┘
  │ • Dispatches native 'ended' event            │                          │
  │ • Hooks React Fiber tree (onSkipToNext)      │                          ▼
  └──────────────────────┬───────────────────────┘        ┌───────────────────────────────────┐
@@ -64,7 +64,6 @@ Unlike traditional ad blockers that try to block Spotify streams at the DNS leve
  │     Background Service Worker (background.js)│
  ├──────────────────────────────────────────────┤
  │ • Persists metrics to chrome.storage.local   │
- │ • Tab-level muting fallback                  │
  └──────────────────────────────────────────────┘
 ```
 
@@ -73,7 +72,7 @@ Unlike traditional ad blockers that try to block Spotify streams at the DNS leve
 1. **Memory Audio Interception (`world: "MAIN"`)**:
    Spotify instantiates audio elements in JavaScript memory (`new Audio()`). In Manifest V3, standard content scripts run in an isolated sandbox and cannot access these memory instances. Spotifiee runs `page_script.js` directly in the page's `MAIN` execution world, allowing direct manipulation of the live media stream.
 2. **0ms Event-Driven Skipping**:
-   Instead of relying solely on periodic timers, Spotifiee hooks `loadedmetadata`, `play`, and `canplay` events on `HTMLMediaElement.prototype`. When an ad begins loading, Spotifiee sets `currentTime = duration` and `playbackRate = 16.0` before the first frame even renders.
+   Instead of relying solely on periodic timers, Spotifiee hooks `loadedmetadata`, `play`, and `canplay` events on `HTMLMediaElement.prototype`. When an ad begins loading, Spotifiee sets `currentTime = duration` before the first frame even renders.
 3. **React Fiber Player Hook**:
    When Spotify hides or disables the forward button `[data-testid="control-button-skip-forward"]` during ad breaks, Spotifiee traverses Spotify's internal React Fiber tree (`__reactFiber$`) to trigger the component's internal `skipToNext()` dispatcher.
 4. **Precision Ad Verification**:
@@ -115,7 +114,7 @@ Unlike traditional ad blockers that try to block Spotify streams at the DNS leve
 
 ```
 Spotifiee/
-├── manifest.json        # Extension Manifest V3 configuration (v1.7.0)
+├── manifest.json        # Extension Manifest V3 configuration (v1.8.0)
 ├── page_script.js       # MAIN world engine: hooks memory audio elements & React Fiber
 ├── content.js           # ISOLATED world script: UI badge & storage coordinator
 ├── background.js        # Service worker for stats persistence & tab controls

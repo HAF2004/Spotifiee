@@ -1,6 +1,6 @@
 /**
- * Spotifiee - Main Page World Engine (world: "MAIN") - v1.7.0
- * Zero-latency ad bypass with direct media lifecycle event listeners, 16x acceleration, and React Fiber skipping.
+ * Spotifiee - Main Page World Engine (world: "MAIN") - v1.8.0
+ * Pure Zero-Latency Ad Bypass: Instant EOF Seek, Event Dispatch & React Fiber Controller.
  */
 
 (function () {
@@ -16,7 +16,7 @@
   };
 
   /**
-   * Fast-action intercept on any media element
+   * Intercept media element instantly
    */
   function handleMediaElement(media) {
     activeMediaElements.add(media);
@@ -27,7 +27,6 @@
         media.volume = 0;
       }
       if (config.autoSkip) {
-        try { media.playbackRate = 16.0; } catch (e) {}
         try {
           if (media.duration && isFinite(media.duration)) {
             media.currentTime = media.duration;
@@ -219,14 +218,8 @@
         media.volume = 0;
       }
 
-      // 2. Speed up & seek end
+      // 2. Seek to end & dispatch EOF
       if (config.autoSkip) {
-        try {
-          if (media.playbackRate !== 16.0) {
-            media.playbackRate = 16.0;
-          }
-        } catch (e) {}
-
         try {
           if (media.duration && isFinite(media.duration) && !isNaN(media.duration)) {
             if (media.currentTime < media.duration - 0.02) {
@@ -262,11 +255,6 @@
     document.documentElement.classList.remove('spotifiee-ad-active');
     const mediaList = getAllMedia();
     mediaList.forEach((media) => {
-      try {
-        if (media.playbackRate !== 1.0) {
-          media.playbackRate = 1.0;
-        }
-      } catch (e) {}
       media.muted = false;
       media.volume = cachedVolume || 1.0;
     });
@@ -288,7 +276,7 @@
     } else {
       if (isAdActive) {
         isAdActive = false;
-        console.log('[Spotifiee MainWorld] 🎵 Music Resumed Smoothly.');
+        console.log('[Spotifiee MainWorld] 🎵 Music Resumed.');
         handleNormal();
         window.postMessage({ type: 'SPOTIFIEE_STATUS_CHANGE', isAd: false }, '*');
       }
@@ -296,5 +284,5 @@
   }
 
   setInterval(loop, 25);
-  console.log('[Spotifiee MainWorld v1.7.0] 🚀 Ultra-fast 25ms engine active.');
+  console.log('[Spotifiee MainWorld v1.8.0] 🚀 Clean zero-latency engine active.');
 })();
